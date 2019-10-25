@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="caaef199-fd72-4b56-888d-abdda8f621f2" >
+		<http:listener-connection host="localhost" port="8086" />
+	</http:listener-config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="f90480c5-52a5-4f2a-8efc-2c82b722fe51" >
+		<file:connection workingDir="C:\files_mule\filein" />
+	</file:config>
+	<file:config name="File_Config1" doc:name="File Config" doc:id="2aee3687-2a6e-4f0b-b27e-abae43d696cd" >
+		<file:connection workingDir="C:\files_mule\fileout" />
+	</file:config>
+	<flow name="file_sampleFlow" doc:id="e463c60d-46ba-4a4c-b4b1-2799456016d0" >
+		<http:listener doc:name="Listener" doc:id="c08ccd7b-9fc2-485f-bc38-e000d60ba2a5" config-ref="HTTP_Listener_config" path="/fileRW" allowedMethods="GET">
+			<http:response >
+				<http:body ><![CDATA[#["file has been written succesfully to the destination"]]]></http:body>
+			</http:response>
+		</http:listener>
+		<file:read doc:name="Read" doc:id="f090427a-ae90-4c3b-b804-1379a27f168a" config-ref="File_Config" path="interm/sample_in.txt"/>
+		<logger level="INFO" doc:name="Logger" doc:id="16c11baf-5986-4917-8c96-c33d3e3e26c6" message="file has been read successfully yes it did" category="all"/>
+		<file:write doc:name="Write" doc:id="6e176fae-d36f-41d6-9091-ceffd42b9b6d" config-ref="File_Config1" path="#[attributes.name]"/>
+	</flow>
+</mule>

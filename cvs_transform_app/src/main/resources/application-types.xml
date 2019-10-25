@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="employee_jeson" format="json">
+      <types:shape format="weave" example="examples/employee_json"><![CDATA[%dw 2.0
+
+type employee_jeson = Array<{|  eno: Number {"typeId": "int"},   ename: String,   ecity: String|}> {"example": "[{\"eno\":101,\"ename\":\"dsajaj\",\"ecity\":\"kjfk\"},{\"eno\":166,\"ename\":\"ggjj\",\"ecity\":\"kiki\"},{\"eno\":222,\"ename\":\"kelkay\",\"ecity\":\"awasa\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="employee_json" format="json">
+      <types:shape format="weave" example="examples/employee_json-1."><![CDATA[%dw 2.0
+
+type employee_json = Array<{|  eno: Number {"typeId": "int"},   ename: String,   ecity: String|}> {"example": "[{\"eno\":101,\"ename\":\"dsajaj\",\"ecity\":\"kjfk\"},{\"eno\":166,\"ename\":\"ggjj\",\"ecity\":\"kiki\"},{\"eno\":222,\"ename\":\"kelkay\",\"ecity\":\"awasa\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="employee_csv" format="csv">
+      <types:shape format="weave" example="examples/employee.csv"><![CDATA[%dw 2.0
+
+type employee_csv = Array<{|  "101": String,   dsajaj: String,   kjfk: String|}>
+
+]]></types:shape>
+      <types:properties>
+        <types:property name="headerLineNumber" value="0"/>
+        <types:property name="header" value="false"/>
+        <types:property name="isQuotedString" value="false"/>
+      </types:properties>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#017834f5-20ff-4c7d-9928-f7bceaa9eb00">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="employee_json"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="employee_csv"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

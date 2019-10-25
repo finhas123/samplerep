@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ftp="http://www.mulesoft.org/schema/mule/ftp" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ftp http://www.mulesoft.org/schema/mule/ftp/current/mule-ftp.xsd">
+	<file:config name="File_Config2" doc:name="File Config" doc:id="99fc7f4a-d2d2-49b3-b39e-20e0295f093d" >
+		<file:connection />
+	</file:config>
+	<ftp:config name="FTP_Config" doc:name="FTP Config" doc:id="faaedfbd-6ba2-4f25-b705-7290c1419064" >
+		<ftp:connection host="192.168.1.64" username="saif" password="priuse123" workingDir="."/>
+	</ftp:config>
+	<flow name="FTPEXFlow1" doc:id="a2ac9827-194d-430d-85b3-99abf82433cd" >
+		<http:listener doc:name="Listener" doc:id="dfac2ef2-bd43-4ebe-ac94-afebb6509c00" config-ref="HTTP_Listener_config" path="/FTPEX">
+			<http:response >
+				<http:body ><![CDATA[#["successfully read and returned to appropriate FTP location"]]]></http:body>
+			</http:response>
+		</http:listener>
+		<ftp:read doc:name="Read" doc:id="32e5f518-1562-4de5-b510-859863a892d7" config-ref="FTP_Config" path="/ftpin/ftp_samplein.txt"/>
+		<logger level="INFO" doc:name="Logger" doc:id="af233621-8ff7-479d-8524-460dcea4c300" message="file has been read from ftp source" category="all"/>
+		<ftp:write doc:name="Write" doc:id="88173094-819f-491e-9f47-2f9b463bafcb" config-ref="FTP_Config" path="/ftpout/outftpsample.txt"/>
+	</flow>
+</mule>
